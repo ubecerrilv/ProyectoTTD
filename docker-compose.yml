@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  gestor_db:
+    container_name: ttd_db
+    #image: oracle/database-xe:21.3.0
+    ports:
+      - "1521:1521"
+      - "5500:5500"
+
+  gestor_app:
+    container_name: ttd_app
+    image: gestorddeobras/spring-boot-app:1.0.0
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:oracle:thin:@oracle-db:1521/xepdb1
+      SPRING_DATASOURCE_USERNAME: ttd_user
+      SPRING_DATASOURCE_PASSWORD: "UsuarioTTD24$$"
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: oracle.jdbc.OracleDriver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - gestor_db
+
+volumes:
+  oracle-data:
+    driver: local

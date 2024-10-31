@@ -1,4 +1,4 @@
-package com.uaemex.proyectottd.proyectottd;
+package com.uaemex.proyectottd;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

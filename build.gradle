@@ -37,3 +37,8 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+bootBuildImage {
+    imageName = 'gestorddeobras/spring-boot-app:1.0.0'
+}
+
