@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Administración de Obras - OXXO</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Sistema de Administración de Obras - OXXO</h2>
+    
+    <!-- Formulario para Agregar/Actualizar Obras -->
+    <form id="form-obra">
+      <h3>Agregar o Actualizar Obra</h3>
+      <label for="nombreObra">Nombre de la Obra:</label>
+      <input type="text" id="nombreObra" name="nombreObra" placeholder="Ej: Construcción Sucursal Si" required>
+
+      <label for="ubicacionObra">Ubicación:</label>
+      <input type="text" id="ubicacionObra" name="ubicacionObra" placeholder="Ej: Calle Falsa 1701, Ciudad" required>
+
+      <label for="fechaInicioObra">Fecha de Inicio:</label>
+      <input type="date" id="fechaInicioObra" name="fechaInicioObra" required>
+
+      <button type="submit">Guardar Obra</button>
+    </form>
+
+    <!-- Formulario para Agregar Trabajadores -->
+    <form id="form-trabajador">
+      <h3>Agregar Trabajador</h3>
+      <label for="nombreTrabajador">Nombre del Trabajador:</label>
+      <input type="text" id="nombreTrabajador" name="nombreTrabajador" placeholder="Ej: Ulises Becerril" required>
+
+      <label for="rolTrabajador">Rol:</label>
+      <input type="text" id="rolTrabajador" name="rolTrabajador" placeholder="Ej: Maistro" required>
+
+      <button type="submit">Guardar Trabajador</button>
+    </form>
+
+    <!-- Formulario para Asignar Trabajador a Obra -->
+    <form id="form-asignar">
+      <h3>Asignar Trabajador a Obra</h3>
+      <label for="idObra">ID de la Obra:</label>
+      <input type="number" id="idObra" name="idObra" placeholder="Ej: 1" required>
+
+      <label for="idTrabajador">ID del Trabajador:</label>
+      <input type="number" id="idTrabajador" name="idTrabajador" placeholder="Ej: 10" required>
+
+      <button type="button" onclick="asignarTrabajador()">Asignar</button>
+    </form>
+
+    <!-- Formulario para Consultar Trabajadores por Obra -->
+    <form id="form-consultar">
+      <h3>Consultar Trabajadores en Obra</h3>
+      <label for="consultaObra">ID de la Obra:</label>
+      <input type="number" id="consultaObra" name="consultaObra" placeholder="Ej: 1" required>
+
+      <button type="button" onclick="consultarTrabajadores()">Consultar</button>
+    </form>
+
+    <!-- Resultados de Consultas -->
+    <div class="results" id="resultados">
+      <p>Aqui poner consultas, o generar un reporte?.</p>
+    </div>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
