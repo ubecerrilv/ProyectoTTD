@@ -1,69 +1,221 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema de Administración de Obras - OXXO</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Administración de Obras - OXXO</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function mostrarContenido(seccion) {
+            document.querySelectorAll('.content').forEach(content => {
+                content.style.display = 'none';
+            });
+            document.getElementById(seccion).style.display = 'block';
+        }
+
+        window.onload = function() {
+            mostrarContenido('bienvenida');
+        };
+    </script>
 </head>
 <body>
-  <div class="container">
-    <h2>Sistema de Administración de Obras - OXXO</h2>
-    
-    <!-- Formulario para Agregar/Actualizar Obras -->
-    <form id="form-obra">
-      <h3>Agregar o Actualizar Obra</h3>
-      <label for="nombreObra">Nombre de la Obra:</label>
-      <input type="text" id="nombreObra" name="nombreObra" placeholder="Ej: Construcción Sucursal Si" required>
-
-      <label for="ubicacionObra">Ubicación:</label>
-      <input type="text" id="ubicacionObra" name="ubicacionObra" placeholder="Ej: Calle Falsa 1701, Ciudad" required>
-
-      <label for="fechaInicioObra">Fecha de Inicio:</label>
-      <input type="date" id="fechaInicioObra" name="fechaInicioObra" required>
-
-      <button type="submit">Guardar Obra</button>
-    </form>
-
-    <!-- Formulario para Agregar Trabajadores -->
-    <form id="form-trabajador">
-      <h3>Agregar Trabajador</h3>
-      <label for="nombreTrabajador">Nombre del Trabajador:</label>
-      <input type="text" id="nombreTrabajador" name="nombreTrabajador" placeholder="Ej: Ulises Becerril" required>
-
-      <label for="rolTrabajador">Rol:</label>
-      <input type="text" id="rolTrabajador" name="rolTrabajador" placeholder="Ej: Maistro" required>
-
-      <button type="submit">Guardar Trabajador</button>
-    </form>
-
-    <!-- Formulario para Asignar Trabajador a Obra -->
-    <form id="form-asignar">
-      <h3>Asignar Trabajador a Obra</h3>
-      <label for="idObra">ID de la Obra:</label>
-      <input type="number" id="idObra" name="idObra" placeholder="Ej: 1" required>
-
-      <label for="idTrabajador">ID del Trabajador:</label>
-      <input type="number" id="idTrabajador" name="idTrabajador" placeholder="Ej: 10" required>
-
-      <button type="button" onclick="asignarTrabajador()">Asignar</button>
-    </form>
-
-    <!-- Formulario para Consultar Trabajadores por Obra -->
-    <form id="form-consultar">
-      <h3>Consultar Trabajadores en Obra</h3>
-      <label for="consultaObra">ID de la Obra:</label>
-      <input type="number" id="consultaObra" name="consultaObra" placeholder="Ej: 1" required>
-
-      <button type="button" onclick="consultarTrabajadores()">Consultar</button>
-    </form>
-
-    <!-- Resultados de Consultas -->
-    <div class="results" id="resultados">
-      <p>Aqui poner consultas, o generar un reporte?.</p>
+    <div class="sidebar">
+        <h2>Menú</h2>
+        <a href="#" onclick="mostrarContenido('bienvenida')">Inicio</a>
+        <a href="#" onclick="mostrarContenido('darAltaObra')">Dar de alta obra</a>
+        <a href="#" onclick="mostrarContenido('darAltaTrabajador')">Dar de alta trabajador</a>
+        <a href="#" onclick="mostrarContenido('asignarTrabajador')">Asignar trabajador a obra</a>
+        <a href="#" onclick="mostrarContenido('darBajaObra')">Dar de baja obra</a>
+        <a href="#" onclick="mostrarContenido('darBajaTrabajador')">Dar de baja trabajador</a>
+        <a href="#" onclick="mostrarContenido('editarObra')">Editar obra</a>
+        <a href="#" onclick="mostrarContenido('editarTrabajador')">Editar trabajador</a>
+        <a href="#" onclick="mostrarContenido('consultarObras')">Consultar obras</a>
+        <a href="#" onclick="mostrarContenido('consultarTrabajadores')">Consultar trabajadores</a>
+        <br>
+        <br>
+        <p>Elaborado por:</p>
+        <p>Ulises y Octavio</p>
+        <!-- <ul>
+            <li>Ulises Becerril Valdes</li>
+            <li>Octavio Daniel Rodriguez Gonzalez</li>
+        </ul>         -->
     </div>
-  </div>
+    <div class="container">
+        <!-- Sección de Bienvenida -->
+        <div id="bienvenida" class="content" style="display: none;">
+            <h3>Bienvenido al Sistema de Administración de Obras</h3>
+            <p>Seleccione una opción del menú a la izquierda para comenzar.</p>
+            <img src="imgs/bg-welcome.png" alt="Bienvenida" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
+        </div>
 
-  <script src="scripts.js"></script>
+        <!-- Sección de Dar de Alta Obra -->
+        <div id="darAltaObra" class="content" style="display: none;">
+            <h3>Dar de Alta Obra</h3>
+            <form>
+                <label for="nombreObra">Nombre de la obra:</label>
+                <input type="text" id="nombreObra" name="nombreObra" placeholder="Ej. Edificio A" required>
+                
+                <label for="ubicacionObra">Ubicación:</label>
+                <input type="text" id="ubicacionObra" name="ubicacionObra" placeholder="Ej. Calle Falsa 123" required>
+
+                <label for="presupuestoObra">Presupuesto:</label>
+                <input type="text" id="presupuestoObra" name="presupuestoObra" placeholder="Ej. $250,350" required>
+
+                <label for="fechaInicioObra">Fecha de inicio:</label>
+                <input type="date" id="fechaInicioObra" name="fechaInicioObra" required>
+
+                <label for="fechaFinObra">Fecha de fin:</label>
+                <input type="date" id="fechaFinObra" name="fechaFinObra" required>
+                
+                <input type="submit" value="Agregar Obra">
+            </form>
+        </div>
+
+        <!-- Sección de Dar de Alta Trabajador -->
+        <div id="darAltaTrabajador" class="content" style="display: none;">
+            <h3>Dar de Alta Trabajador</h3>
+            <form>
+                <label for="nombreTrabajador">Nombre(s) del trabajador:</label>
+                <input type="text" id="nombreTrabajador" name="nombreTrabajador" placeholder="Ej. Ulises" required>
+
+                <label for="apellido1Trabajador">Primer apellido:</label>
+                <input type="text" id="apellido1Trabajador" name="apellido1Trabajador" placeholder="Ej. Becerril" required>
+
+                <label for="apellido2Trabajador">Segundo apellido:</label>
+                <input type="text" id="apellido2Trabajador" name="apellido2Trabajador" placeholder="Ej. Valdes" required>
+
+                <label for="edadTrabajador">Edad:</label>
+                <input type="number" id="edadTrabajador" name="edadTrabajador" placeholder="Ej. 35" required>
+
+                <label for="tipoTrabajador">Tipo:</label>
+                <input type="text" id="tipoTrabajador" name="tipoTrabajador" placeholder="Ej. Ingeniero" required>
+
+                <label for="estadoTrabajador">Estado:</label>
+                <input type="text" id="estadoTrabajador" name="estadoTrabajador" placeholder="Ej. Activo" required>
+
+                <input type="submit" value="Agregar Trabajador">
+            </form>
+        </div>
+
+        <!-- Sección de Asignar Trabajador a Obra-->
+        <div id="asignarTrabajador" class="content" style="display: none;">
+            <h3>Asignar Trabajador a Obra</h3>
+            <form>
+                <label for="nombreObraAsignar">Nombre de la obra:</label>
+                <input type="text" id="nombreObraAsignar" name="nombreObraAsignar" placeholder="Ej. Edificio A" required>
+                
+                <label for="nombreTrabajadorAsignar">Nombre del trabajador:</label>
+                <input type="text" id="nombreTrabajadorAsignar" name="nombreTrabajadorAsignar" placeholder="Ej. Ulises" required>
+                
+                <label for="apellido1TrabajadorAsignar">Apellido 1 del trabajador:</label>
+                <input type="text" id="apellido1TrabajadorAsignar" name="apellido1TrabajadorAsignar" placeholder="Ej. Becerril" required>
+                
+                <label for="apellido2TrabajadorAsignar">Apellido 2 del trabajador:</label>
+                <input type="text" id="apellido2TrabajadorAsignar" name="apellido2TrabajadorAsignar" placeholder="Ej. Valdes" required>
+                
+                <button type="submit" id="btnAsignarTrabajador">Asignar trabajador</button>
+            </form>
+        </div>
+
+        <!-- Sección de Dar de Baja Obra -->
+        <div id="darBajaObra" class="content" style="display: none;">
+            <h3>Dar de Baja Obra</h3>
+            <form>
+                <label for="nombreObraBaja">Nombre de la obra:</label>
+                <input type="text" id="nombreObraBaja" name="nombreObraBaja" placeholder="Ej. Edificio A" required>
+      
+                <button type="button" onclick="verificarObra()">Verificar Obra</button>
+                <input type="submit" id="btnDarBajaObra" value="Dar de Baja Obra" disabled>
+            </form>
+        </div>
+
+        <!-- Sección de Dar de Baja Trabajador -->
+        <div id="darBajaTrabajador" class="content" style="display: none;">
+            <h3>Dar de Baja Trabajador</h3>
+            <form>
+                <label for="nombreTrabajadorBaja">Nombre:</label>
+                <input type="text" id="nombreTrabajadorBaja" name="nombreTrabajadorBaja" placeholder="Ej. Ulises" required>
+      
+                <label for="apellido1TrabajadorBaja">Primer apellido:</label>
+                <input type="text" id="apellido1TrabajadorBaja" name="apellido1TrabajadorBaja" placeholder="Ej. Becerril" required>
+      
+                <label for="apellido2TrabajadorBaja">Segundo apellido:</label>
+                <input type="text" id="apellido2TrabajadorBaja" name="apellido2TrabajadorBaja" placeholder="Ej. Valdes" required>
+      
+                <button type="button" onclick="verificarTrabajador()">Verificar Trabajador</button>
+                <input type="submit" id="btnDarBajaTrabajador" value="Dar de Baja Trabajador" disabled>
+            </form>
+        </div>
+
+        <!-- Sección de Editar Obra -->
+        <div id="editarObra" class="content" style="display: none;">
+            <h3>Editar Obra</h3>
+            <form>
+                <label for="nombreObraEditar">Nombre actual de la obra:</label>
+                <input type="text" id="nombreObraEditar" name="nombreObraEditar" placeholder="Ej. Edificio A" required>
+
+                <label for="nuevoNombreObra">Nuevo nombre:</label>
+                <input type="text" id="nuevoNombreObra" name="nuevoNombreObra" placeholder="Ej. Edificio B" required>
+                
+                <label for="nuevaUbicacionObra">Nueva ubicación:</label>
+                <input type="text" id="nuevaUbicacionObra" name="nuevaUbicacionObra" placeholder="Ej. Calle Falsa 456" required>
+
+                <label for="nuevoPresupuestoObra">Nuevo presupuesto:</label>
+                <input type="text" id="nuevoPresupuestoObra" name="nuevoPresupuestoObra" placeholder="Ej. $300,000" required>
+
+                <label for="nuevaFechaInicioObra">Nueva fecha de inicio:</label>
+                <input type="date" id="nuevaFechaInicioObra" name="nuevaFechaInicioObra" required>
+
+                <label for="nuevaFechaFinObra">Nueva fecha de fin:</label>
+                <input type="date" id="nuevaFechaFinObra" name="nuevaFechaFinObra" required>
+                
+                <input type="submit" value="Actualizar Obra">
+            </form>
+        </div>
+
+        <!-- Sección de Editar Trabajador -->
+        <div id="editarTrabajador" class="content" style="display: none;">
+            <h3>Editar Trabajador</h3>
+            <form>
+                <label for="nombreTrabajadorEditar">Nombre actual del trabajador:</label>
+                <input type="text" id="nombreTrabajadorEditar" name="nombreTrabajadorEditar" placeholder="Ej. Ulises" required>
+                
+                <label for="nuevoNombreTrabajador">Nuevo nombre:</label>
+                <input type="text" id="nuevoNombreTrabajador" name="nuevoNombreTrabajador" placeholder="Ej. Juan" required>
+
+                <label for="nuevoApellido1Trabajador">Nuevo primer apellido:</label>
+                <input type="text" id="nuevoApellido1Trabajador" name="nuevoApellido1Trabajador" placeholder="Ej. Pérez" required>
+
+                <label for="nuevoApellido2Trabajador">Nuevo segundo apellido:</label>
+                <input type="text" id="nuevoApellido2Trabajador" name="nuevoApellido2Trabajador" placeholder="Ej. Gómez" required>
+
+                <label for="nuevaEdadTrabajador">Nueva edad:</label>
+                <input type="number" id="nuevaEdadTrabajador" name="nuevaEdadTrabajador" placeholder="Ej. 30" required>
+
+                <label for="nuevoTipoTrabajador">Nuevo tipo:</label>
+                <input type="text" id="nuevoTipoTrabajador" name="nuevoTipoTrabajador" placeholder="Ej. Arquitecto" required>
+
+                <label for="nuevoEstadoTrabajador">Nuevo estado:</label>
+                <input type="text" id="nuevoEstadoTrabajador" name="nuevoEstadoTrabajador" placeholder="Ej. Inactivo" required>
+
+                <input type="submit" value="Actualizar Trabajador">
+            </form>
+        </div>
+
+        <!-- Sección de Consultar Obras -->
+        <div id="consultarObras" class="content" style="display: none;">
+            <h3>Consultar Obras</h3>
+            <p>Aquí podrás ver el listado de obras.</p>
+            <!-- Agregar un elemento para mostrar la lista de obras -->
+        </div>
+
+        <!-- Sección de Consultar Trabajadores -->
+        <div id="consultarTrabajadores" class="content" style="display: none;">
+            <h3>Consultar Trabajadores</h3>
+            <p>listado de trabajadores por obra</p>
+            <!-- Agregar un elemento para mostrar la lista de trabajadores -->
+        </div>
+    </div>
+    <!-- <script src="script.js"></script> -->
 </body>
 </html>
