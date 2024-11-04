@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Administración de Obras - OXXO</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
     <script>
         function mostrarContenido(seccion) {
             document.querySelectorAll('.content').forEach(content => {
@@ -45,7 +45,7 @@
         <div id="bienvenida" class="content" style="display: none;">
             <h3>Bienvenido al Sistema de Administración de Obras</h3>
             <p>Seleccione una opción del menú a la izquierda para comenzar.</p>
-            <img src="imgs/bg-welcome.png" alt="Bienvenida" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
+            <img th:src="@{/images/bg-welcome.png}" alt="Bienvenida" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
         </div>
 
         <!-- Sección de Dar de Alta Obra -->
