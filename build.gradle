@@ -39,6 +39,6 @@ tasks.named('test') {
 }
 
 bootBuildImage {
-    imageName = 'gestorddeobras/spring-boot-app:1.0.0'
+    imageName = 'ttd/gesob:1.0.0'
 }
 

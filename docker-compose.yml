@@ -1,26 +1,35 @@
 version: '3.8'
 
 services:
-  gestor_db:
+  #CONTENEDOR DE BASE DE DATOS
+  gesob_db:
     container_name: ttd_db
-    #image: oracle/database-xe:21.3.0
+    image: oracle/database-xe:21.3.0
     ports:
-      - "1521:1521"
-      - "5500:5500"
+      - "1521:1521"  # Listener
+      - "5500:5500"  # Enterprise Manager Express
+    environment:
+      ORACLE_PWD: "ProyectoTTD24$$"  # Contraseña para SYS, SYSTEM y PDBADMIN
+      ORACLE_CHARACTERSET: AL32UTF8  # Conjunto de caracteres para la base de datos
+    volumes:
+      - oracle-data:/opt/oracle/oradata  # Volumen para persistir los datos
+      - ./scripts/01_create_user.sql:/opt/oracle/scripts/setup/01_create_user.sql  # Archivo de inicialización
+      - ./scripts/02_create_schema.sql:/opt/oracle/scripts/setup/02_create_schema.sql
 
-  gestor_app:
+  #CONTENEDOR DE APLICACIÓN
+  gesob_app:
     container_name: ttd_app
-    image: gestorddeobras/spring-boot-app:1.0.0
+    image: ttd/gesob:1.0.0
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:oracle:thin:@oracle-db:1521/xepdb1
-      SPRING_DATASOURCE_USERNAME: ttd_user
+      SPRING_DATASOURCE_URL: jdbc:oracle:thin:@oracle-xe:1521/xepdb1
+      SPRING_DATASOURCE_USERNAME: gesob_user
       SPRING_DATASOURCE_PASSWORD: "UsuarioTTD24$$"
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: oracle.jdbc.OracleDriver
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     depends_on:
-      - gestor_db
+      - gesob_db
 
 volumes:
   oracle-data:
