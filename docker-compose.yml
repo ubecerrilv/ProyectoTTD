@@ -16,6 +16,12 @@ services:
       - ./scripts/01_create_user.sql:/opt/oracle/scripts/setup/01_create_user.sql  # Archivo de inicialización
       - ./scripts/02_create_schema.sql:/opt/oracle/scripts/setup/02_create_schema.sql
 
+    healthcheck:
+      test: ["CMD", "tnsping", "xepdb1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   #CONTENEDOR DE APLICACIÓN
   gesob_app:
     container_name: ttd_app
@@ -23,13 +29,14 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:oracle:thin:@oracle-xe:1521/xepdb1
+      SPRING_DATASOURCE_URL: jdbc:oracle:thin:@ttd_db:1521/xepdb1
       SPRING_DATASOURCE_USERNAME: gesob_user
       SPRING_DATASOURCE_PASSWORD: "UsuarioTTD24$$"
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: oracle.jdbc.OracleDriver
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     depends_on:
-      - gesob_db
+       gesob_db:
+          condition: service_healthy
 
 volumes:
   oracle-data:

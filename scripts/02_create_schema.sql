@@ -6,7 +6,7 @@ CREATE TABLE obra (
                       id           INTEGER NOT NULL,
                       nombre       VARCHAR2(100) NOT NULL,
                       ubicacion    VARCHAR2(200) NOT NULL,
-                      presupuesto  NUMBER(7, 2) NOT NULL,
+                      presupuesto  NUMBER(11, 2) NOT NULL,
                       fecha_inicio DATE NOT NULL,
                       fecha_fin    DATE NOT NULL
 );
