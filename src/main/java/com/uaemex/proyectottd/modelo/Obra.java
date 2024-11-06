@@ -7,38 +7,29 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "obra")
 public class Obra {
 
-    @Getter
-    @Setter
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "obra_id_seq")
+    @SequenceGenerator(name = "obra_id_seq", sequenceName = "obra_id_seq", allocationSize = 1)
+    private int id;
 
-    @Getter
-    @Setter
     @Column(nullable = false, length = 100)
     private String nombre;
 
-    @Getter
-    @Setter
     @Column(nullable = false, length = 200)
     private String ubicacion;
 
-    @Getter
-    @Setter
-    @Column(nullable = false, precision = 7, scale = 2)
+    @Column(nullable = false, precision = 11, scale = 2)
     private BigDecimal presupuesto;
 
-    @Getter
-    @Setter
     @Column(name = "fecha_inicio", nullable = false)
     private LocalDate fechaInicio;
 
-    @Getter
-    @Setter
     @Column(name = "fecha_fin", nullable = false)
     private LocalDate fechaFin;
 

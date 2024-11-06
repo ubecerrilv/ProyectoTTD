@@ -49,77 +49,80 @@
             </div>
 
             <!-- Sección de Dar de Alta Obra -->
+            <script>
+                function mostrarConfirmacion(mensaje) {
+                    alert(mensaje);
+                }
+            </script>
+
             <div id="darAltaObra" class="content" style="display: none;">
                 <h3>Dar de Alta Obra</h3>
-                <form th:action="@{/obras/guardar}" th:object="${obra}" method="post">
+                <form th:action="@{/guardarObra}" th:object="${obra}" method="post" onsubmit="mostrarConfirmacion('Obra dada de alta')">
                     <label for="nombreObra">Nombre de la obra:</label>
                     <input type="text" id="nombreObra" th:field="*{nombre}" placeholder="Ej. Edificio A" required>
-
 
                     <label for="ubicacionObra">Ubicación:</label>
                     <input type="text" id="ubicacionObra" th:field="*{ubicacion}" placeholder="Ej. Calle Falsa 123" required>
 
                     <label for="presupuestoObra">Presupuesto:</label>
-                    <input type="text" step="0.01" id="presupuestoObra" th:field="*{presupuesto}"  placeholder="$0.00" required>
-
-
+                    <input type="text" id="presupuestoObra" name="presupuesto" required>
 
                     <label for="fechaInicioObra">Fecha de inicio:</label>
-                    <input type="date" id="fechaInicioObra" th:field="*{fechaInicio}" required>
+                    <input type="date" id="fechaInicioObra" th:field="*{fechaInicio}" required style="width: 150px;">
 
                     <label for="fechaFinObra">Fecha de fin:</label>
-                    <input type="date" id="fechaFinObra" th:field="*{fechaFin}" required>
+                    <input type="date" id="fechaFinObra" th:field="*{fechaFin}" required style="width: 150px;">
 
                     <input type="submit" value="Agregar obra">
                 </form>
-
-                <div th:if="${param.success}">
-                    <p>¡Obra registrada exitosamente!</p>
-                </div>
-
             </div>
 
             <!-- Sección de Dar de Alta Trabajador -->
             <div id="darAltaTrabajador" class="content" style="display: none;">
                 <h3>Dar de Alta Trabajador</h3>
-                <form>
+                <form th:action="@{/guardarTrabajador}" th:object="${trabajador}" method="post" onsubmit="mostrarConfirmacion('Trabajador dado de alta')">
                     <label for="nombreTrabajador">Nombre(s) del trabajador:</label>
-                    <input type="text" id="nombreTrabajador" name="nombreTrabajador" placeholder="Ej. Ulises" required>
+                    <input type="text" id="nombreTrabajador" th:field="*{nombre}" placeholder="Ej. Ulises" required>
 
                     <label for="apellido1Trabajador">Primer apellido:</label>
-                    <input type="text" id="apellido1Trabajador" name="apellido1Trabajador" placeholder="Ej. Becerril" required>
+                    <input type="text" id="apellido1Trabajador" th:field="*{apellido_1}" placeholder="Ej. Becerril" required>
 
                     <label for="apellido2Trabajador">Segundo apellido:</label>
-                    <input type="text" id="apellido2Trabajador" name="apellido2Trabajador" placeholder="Ej. Valdes" required>
+                    <input type="text" id="apellido2Trabajador" th:field="*{apellido_2}" placeholder="Ej. Valdes" required>
 
                     <label for="edadTrabajador">Edad:</label>
-                    <input type="number" id="edadTrabajador" name="edadTrabajador" placeholder="Ej. 35" required>
+                    <input type="number" id="edadTrabajador" th:field="*{edad}" placeholder="Ej. 35" required>
 
                     <label for="tipoTrabajador">Tipo:</label>
-                    <input type="text" id="tipoTrabajador" name="tipoTrabajador" placeholder="Ej. Ingeniero" required>
+                    <input type="text" id="tipoTrabajador" th:field="*{tipo}" placeholder="Ej. Ingeniero" required>
 
-                    <label for="estadoTrabajador">Estado:</label>
-                    <input type="text" id="estadoTrabajador" name="estadoTrabajador" placeholder="Ej. Activo" required>
+                    <label >Obra:</label>
+                    <select th:field="*{obra}" required>
+                        <option value="">Seleccione una obra</option>
+                        <option th:each="obra : ${obras}" th:value="${obra.id}" th:text="${obra.nombre}"></option>
+                        <option value="NULL">Ninguna</option>
+                    </select>
 
                     <input type="submit" value="Agregar Trabajador">
                 </form>
+
             </div>
 
             <!-- Sección de Asignar Trabajador a Obra-->
             <div id="asignarTrabajador" class="content" style="display: none;">
                 <h3>Asignar Trabajador a Obra</h3>
-                <form>
-                    <label for="nombreObraAsignar">Nombre de la obra:</label>
-                    <input type="text" id="nombreObraAsignar" name="nombreObraAsignar" placeholder="Ej. Oxxo Torre Lerma" required>
+                <form th:action="@{/trabajadorAObra}" method="post" onsubmit="mostrarConfirmacion('Trabajador asignado a obra')">
+                    <!-- Seleccionar un Trabajador -->
+                    <label for="trabajador_id">Seleccionar Trabajador:</label>
+                    <select id="trabajador_id" required>
+                        <option th:each="trabajador : ${trabajadores}" th:value="${trabajador.id}" th:text="${trabajador.nombre}"></option>
+                    </select>
 
-                    <label for="nombreTrabajadorAsignar">Nombre del trabajador:</label>
-                    <input type="text" id="nombreTrabajadorAsignar" name="nombreTrabajadorAsignar" placeholder="Ej. Ulises" required>
-
-                    <label for="apellido1TrabajadorAsignar">Apellido 1 del trabajador:</label>
-                    <input type="text" id="apellido1TrabajadorAsignar" name="apellido1TrabajadorAsignar" placeholder="Ej. Becerril" required>
-
-                    <label for="apellido2TrabajadorAsignar">Apellido 2 del trabajador:</label>
-                    <input type="text" id="apellido2TrabajadorAsignar" name="apellido2TrabajadorAsignar" placeholder="Ej. Valdes" required>
+                    <!-- Seleccionar una Obra -->
+                    <label for="obra_id">Seleccionar Obra:</label>
+                    <select id="obra_id" required>
+                        <option th:each="obra : ${obras}" th:value=${obra.id} th:text="${obra.nombre}"></option>
+                    </select>
 
                     <button type="submit" id="btnAsignarTrabajador">Asignar trabajador</button>
                 </form>
@@ -129,11 +132,13 @@
             <div id="darBajaObra" class="content" style="display: none;">
                 <h3>Dar de Baja Obra</h3>
                 <form>
-                    <label for="nombreObraBaja">Nombre de la obra:</label>
-                    <input type="text" id="nombreObraBaja" name="nombreObraBaja" placeholder="Ej. Edificio A" required>
-
-                    <button type="button" onclick="verificarObra()">Verificar Obra</button>
-                    <input type="submit" id="btnDarBajaObra" value="Dar de Baja Obra" disabled>
+                    <label>Nombre de la obra:</label>
+                    <select th:field="*{obra}" required>
+                        <option value="">Seleccione una obra</option>
+                        <option th:each="obra : ${obras}" th:value="${obra}" th:text="${obra.nombre}"></option>
+                    </select>
+                    <input type="submit" value="Dar de Baja Obra" style="width: 150px;">
+                    <span>Al dar de baja la obra se cambiará la fecha de fin a el día de hoy</span>
                 </form>
             </div>
 
@@ -141,45 +146,18 @@
             <div id="darBajaTrabajador" class="content" style="display: none;">
                 <h3>Dar de Baja Trabajador</h3>
                 <form>
-                    <label for="nombreTrabajadorBaja">Nombre:</label>
-                    <input type="text" id="nombreTrabajadorBaja" name="nombreTrabajadorBaja" placeholder="Ej. Ulises" required>
+                    <label>Nombre del trabajador:</label>
+                    <select th:field="*{trabajador}" required>
+                        <option value="">Seleccione el trabajador</option>
+                        <option th:each="trabajador : ${trabajadores}" th:value="${trabajador}" th:text="${trabajador.nombre}"></option>
+                    </select>
 
-                    <label for="apellido1TrabajadorBaja">Primer apellido:</label>
-                    <input type="text" id="apellido1TrabajadorBaja" name="apellido1TrabajadorBaja" placeholder="Ej. Becerril" required>
-
-                    <label for="apellido2TrabajadorBaja">Segundo apellido:</label>
-                    <input type="text" id="apellido2TrabajadorBaja" name="apellido2TrabajadorBaja" placeholder="Ej. Valdes" required>
-
-                    <button type="button" onclick="verificarTrabajador()">Verificar Trabajador</button>
-                    <input type="submit" id="btnDarBajaTrabajador" value="Dar de Baja Trabajador" disabled>
+                    <input type="submit" value="Dar de baja trabajador" style="width: 150px;">
+                    <span>Al dar de baja el trabajador se desvinculará de cualquier obra y será marcado como inactivo</span>
                 </form>
             </div>
+'
 
-            <!-- Sección de Editar Obra -->
-            <div id="editarObra" class="content" style="display: none;">
-                <h3>Editar Obra</h3>
-                <form>
-                    <label for="nombreObraEditar">Nombre actual de la obra:</label>
-                    <input type="text" id="nombreObraEditar" name="nombreObraEditar" placeholder="Ej. Edificio A" required>
-
-                    <label for="nuevoNombreObra">Nuevo nombre:</label>
-                    <input type="text" id="nuevoNombreObra" name="nuevoNombreObra" placeholder="Ej. Edificio B" required>
-
-                    <label for="nuevaUbicacionObra">Nueva ubicación:</label>
-                    <input type="text" id="nuevaUbicacionObra" name="nuevaUbicacionObra" placeholder="Ej. Calle Falsa 456" required>
-
-                    <label for="nuevoPresupuestoObra">Nuevo presupuesto:</label>
-                    <input type="text" id="nuevoPresupuestoObra" name="nuevoPresupuestoObra" placeholder="Ej. $300,000" required>
-
-                    <label for="nuevaFechaInicioObra">Nueva fecha de inicio:</label>
-                    <input type="date" id="nuevaFechaInicioObra" name="nuevaFechaInicioObra" required>
-
-                    <label for="nuevaFechaFinObra">Nueva fecha de fin:</label>
-                    <input type="date" id="nuevaFechaFinObra" name="nuevaFechaFinObra" required>
-
-                    <input type="submit" value="Actualizar Obra">
-                </form>
-            </div>
 
             <!-- Sección de Editar Trabajador -->
             <div id="editarTrabajador" class="content" style="display: none;">

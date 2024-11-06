@@ -32,29 +32,49 @@ ALTER TABLE trabajador
     ADD CONSTRAINT trabajador_obra_fk FOREIGN KEY ( obra_id )
         REFERENCES obra ( id );
 
--- Secuencia y trigger para autoincremento del ID en la tabla obra
-CREATE SEQUENCE obra_seq START WITH 1 INCREMENT BY 1;
+-- Secuencia y para autoincremento del ID en la tabla obra
+CREATE SEQUENCE obra_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
 
-CREATE OR REPLACE TRIGGER obra_id_trigger
-BEFORE INSERT ON obra
-FOR EACH ROW
+-- Secuencia y para autoincremento del ID en la tabla trabajador
+CREATE SEQUENCE trabajador_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+--Trigger para desvincular el trabajador de una obra
+CREATE OR REPLACE TRIGGER actualizar_trabajadores_fecha_fin
+AFTER UPDATE OR INSERT ON obra
+    FOR EACH ROW
 BEGIN
-    IF :NEW.id IS NULL THEN
-SELECT obra_seq.NEXTVAL INTO :NEW.id FROM dual;
+    -- Comprobar si la fecha de fin ha sido alcanzada o superada
+    IF :NEW.fecha_fin <= SYSDATE THEN
+        -- Actualizar obra_id a NULL para los trabajadores de la obra
+UPDATE trabajador
+SET obra_id = NULL
+WHERE obra_id = :NEW.id;
 END IF;
 END;
 /
 
--- Secuencia y trigger para autoincremento del ID en la tabla trabajador
-CREATE SEQUENCE trabajador_seq START WITH 1 INCREMENT BY 1;
-
-CREATE OR REPLACE TRIGGER trabajador_id_trigger
-BEFORE INSERT ON trabajador
-FOR EACH ROW
+--PLSQL PARA VERIFICAR SI LA OBRA YA HA TERMINADO
 BEGIN
-    IF :NEW.id IS NULL THEN
-SELECT trabajador_seq.NEXTVAL INTO :NEW.id FROM dual;
-END IF;
+   DBMS_SCHEDULER.create_job (
+      job_name        => 'actualizar_trabajadores_fecha_fin_job',
+      job_type        => 'PLSQL_BLOCK',
+      job_action      => 'BEGIN
+                           UPDATE trabajador
+                           SET obra_id = NULL
+                           WHERE obra_id IN (SELECT id FROM obra WHERE fecha_fin <= SYSDATE);
+                         END;',
+      start_date      => SYSTIMESTAMP,
+      repeat_interval => 'FREQ=DAILY; BYHOUR=0; BYMINUTE=0; BYSECOND=0', -- Ejecutar una vez al día a medianoche
+      enabled         => TRUE
+   );
 END;
 /
 
@@ -95,6 +115,5 @@ WHERE
 /
 
 -- DOS TABLAS
--- DOS TRIGGERS
 -- UNA FUNCIÓN
 -- UNA VISTA
