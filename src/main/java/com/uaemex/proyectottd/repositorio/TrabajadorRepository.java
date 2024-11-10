@@ -10,8 +10,7 @@ import java.util.List;
 
 @Repository
 public interface TrabajadorRepository extends JpaRepository<Trabajador, Integer> {
-    @Query("SELECT t FROM Trabajador t WHERE t.obra.id = NULL")
+    @Query("SELECT t FROM Trabajador t WHERE t.obra.id is NULL and t.estado = 1")
     List<Trabajador> findTrabajadorDisponible();
-
 
 }

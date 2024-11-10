@@ -3,6 +3,7 @@ package com.uaemex.proyectottd.modelo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -28,9 +29,14 @@ public class Obra {
     private BigDecimal presupuesto;
 
     @Column(name = "fecha_inicio", nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaInicio;
 
     @Column(name = "fecha_fin", nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaFin;
+
+    @Transient  //No es parte de la base de datos
+    private Integer numeroTrabajadores;
 
 }

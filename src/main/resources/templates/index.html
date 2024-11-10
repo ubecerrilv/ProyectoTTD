@@ -100,7 +100,7 @@
                     <select th:field="*{obra}" required>
                         <option value="">Seleccione una obra</option>
                         <option th:each="obra : ${obras}" th:value="${obra.id}" th:text="${obra.nombre}"></option>
-                        <option value="NULL">Ninguna</option>
+                        <option value="-1">Ninguna</option>
                     </select>
 
                     <input type="submit" value="Agregar Trabajador">
@@ -113,15 +113,15 @@
                 <h3>Asignar Trabajador a Obra</h3>
                 <form th:action="@{/trabajadorAObra}" method="post" onsubmit="mostrarConfirmacion('Trabajador asignado a obra')">
                     <!-- Seleccionar un Trabajador -->
-                    <label for="trabajador_id">Seleccionar Trabajador:</label>
-                    <select id="trabajador_id" required>
-                        <option th:each="trabajador : ${trabajadores}" th:value="${trabajador.id}" th:text="${trabajador.nombre}"></option>
+                    <label for="trabajador_id">Seleccionar trabajador disponible:</label>
+                    <select id="trabajador_id" name="trabajador_id" required>
+                        <option th:each="trabajador : ${trabajadoresDisponibles}" th:value="${trabajador.id}" th:text="${trabajador.nombre} + ' ' + ${trabajador.apellido_1} + ' ' + ${trabajador.apellido_2}"></option>
                     </select>
 
                     <!-- Seleccionar una Obra -->
                     <label for="obra_id">Seleccionar Obra:</label>
-                    <select id="obra_id" required>
-                        <option th:each="obra : ${obras}" th:value=${obra.id} th:text="${obra.nombre}"></option>
+                    <select id="obra_id" name="obra_id" required>
+                        <option th:each="obra : ${obras}" th:value="${obra.id}" th:text="${obra.nombre}"></option>
                     </select>
 
                     <button type="submit" id="btnAsignarTrabajador">Asignar trabajador</button>
@@ -131,11 +131,10 @@
             <!-- Sección de Dar de Baja Obra -->
             <div id="darBajaObra" class="content" style="display: none;">
                 <h3>Dar de Baja Obra</h3>
-                <form>
-                    <label>Nombre de la obra:</label>
-                    <select th:field="*{obra}" required>
-                        <option value="">Seleccione una obra</option>
-                        <option th:each="obra : ${obras}" th:value="${obra}" th:text="${obra.nombre}"></option>
+                <form th:action="@{/darDeBajaObra}" method="post" onsubmit="mostrarConfirmacion('Obra dada de baja')">
+                    <label for="obraId">Nombre de la obra:</label>
+                    <select id="obraId" name="obraId" required>
+                        <option th:each="obra : ${obras}" th:value="${obra.id}" th:text="${obra.nombre}"></option>
                     </select>
                     <input type="submit" value="Dar de Baja Obra" style="width: 150px;">
                     <span>Al dar de baja la obra se cambiará la fecha de fin a el día de hoy</span>
@@ -145,61 +144,92 @@
             <!-- Sección de Dar de Baja Trabajador -->
             <div id="darBajaTrabajador" class="content" style="display: none;">
                 <h3>Dar de Baja Trabajador</h3>
-                <form>
-                    <label>Nombre del trabajador:</label>
-                    <select th:field="*{trabajador}" required>
-                        <option value="">Seleccione el trabajador</option>
-                        <option th:each="trabajador : ${trabajadores}" th:value="${trabajador}" th:text="${trabajador.nombre}"></option>
+                <form th:action="@{/darDeBajaTrabajador}" method="post" onsubmit="mostrarConfirmacion('Trabajador dado de baja')">
+                    <label for="trabajadorId">Nombre del trabajador:</label>
+                    <select id="trabajadorId" name="trabajadorId" required>
+                        <option th:each="trabajador : ${trabajadores}" th:value="${trabajador.id}" th:text="${trabajador.nombre} + ' ' + ${trabajador.apellido_1} + ' ' + ${trabajador.apellido_2}"></option>
                     </select>
 
                     <input type="submit" value="Dar de baja trabajador" style="width: 150px;">
                     <span>Al dar de baja el trabajador se desvinculará de cualquier obra y será marcado como inactivo</span>
                 </form>
             </div>
-'
+
+            <!-- Sección de Editar Obra -->
+            <div id="editarObra" class="content" style="display: none;">
+                <form th:action="@{/editarObra}" method="post">
+                    <!-- Seleccionar una Obra -->
+                    <label for="editarObraSL">Seleccionar Obra:</label>
+                    <select id="editarObraSL" name="obraId" required>
+                        <option th:each="obra : ${obras}" th:value="${obra.id}" th:text="${obra.nombre}"></option>
+                    </select>
+
+                    <input type="submit" value="Editar obra" style="width: 150px;">
+                </form>
+            </div>
 
 
             <!-- Sección de Editar Trabajador -->
             <div id="editarTrabajador" class="content" style="display: none;">
-                <h3>Editar Trabajador</h3>
-                <form>
-                    <label for="nombreTrabajadorEditar">Nombre actual del trabajador:</label>
-                    <input type="text" id="nombreTrabajadorEditar" name="nombreTrabajadorEditar" placeholder="Ej. Ulises" required>
+                <form th:action="@{/editarTrabajador}" method="post">
+                    <!-- Seleccionar un trabajador -->
+                    <label for="editarTrabajadorSL">Seleccionar trabajador:</label>
+                    <select id="editarTrabajadorSL" name="trabajadorId" required>
+                        <option th:each="trabajador : ${trabajadores}" th:value="${trabajador.id}" th:text="${trabajador.nombre} + ' '+ ${trabajador.apellido_1} + ' '+ ${trabajador.apellido_2}"></option>
+                    </select>
 
-                    <label for="nuevoNombreTrabajador">Nuevo nombre:</label>
-                    <input type="text" id="nuevoNombreTrabajador" name="nuevoNombreTrabajador" placeholder="Ej. Juan" required>
-
-                    <label for="nuevoApellido1Trabajador">Nuevo primer apellido:</label>
-                    <input type="text" id="nuevoApellido1Trabajador" name="nuevoApellido1Trabajador" placeholder="Ej. Pérez" required>
-
-                    <label for="nuevoApellido2Trabajador">Nuevo segundo apellido:</label>
-                    <input type="text" id="nuevoApellido2Trabajador" name="nuevoApellido2Trabajador" placeholder="Ej. Gómez" required>
-
-                    <label for="nuevaEdadTrabajador">Nueva edad:</label>
-                    <input type="number" id="nuevaEdadTrabajador" name="nuevaEdadTrabajador" placeholder="Ej. 30" required>
-
-                    <label for="nuevoTipoTrabajador">Nuevo tipo:</label>
-                    <input type="text" id="nuevoTipoTrabajador" name="nuevoTipoTrabajador" placeholder="Ej. Arquitecto" required>
-
-                    <label for="nuevoEstadoTrabajador">Nuevo estado:</label>
-                    <input type="text" id="nuevoEstadoTrabajador" name="nuevoEstadoTrabajador" placeholder="Ej. Inactivo" required>
-
-                    <input type="submit" value="Actualizar Trabajador">
+                    <input type="submit" value="Editar trabajador" style="width: 150px;">
                 </form>
             </div>
 
             <!-- Sección de Consultar Obras -->
             <div id="consultarObras" class="content" style="display: none;">
-                <h3>Consultar Obras</h3>
-                <p>Aquí podrás ver el listado de obras.</p>
-                <!-- Agregar un elemento para mostrar la lista de obras -->
+                <h3>Lista de Obras</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Ubicación</th>
+                        <th>Presupuesto</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Número de Trabajadores</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="obra : ${obrasCompletas}">
+                        <td th:text="${obra.nombre}"></td>
+                        <td th:text="${obra.ubicacion}"></td>
+                        <td th:text="${obra.presupuesto}"></td>
+                        <td th:text="${obra.fechaInicio}"></td>
+                        <td th:text="${obra.fechaFin}"></td>
+                        <td th:text="${obra.numeroTrabajadores}"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
 
             <!-- Sección de Consultar Trabajadores -->
             <div id="consultarTrabajadores" class="content" style="display: none;">
-                <h3>Consultar Trabajadores</h3>
-                <p>listado de trabajadores por obra</p>
-                <!-- Agregar un elemento para mostrar la lista de trabajadores -->
+                <h3>Lista de trabajadores</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Edad</th>
+                        <th>Puesto</th>
+                        <th>Obra actual</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="trabajadorActivo : ${trabajadoresActivos}">
+                        <td th:text="${trabajadorActivo.trabajadorNombre}+' '+${trabajadorActivo.trabajadorApellido1}+' '+${trabajadorActivo.trabajadorApellido2}"></td>
+                        <td th:text="${trabajadorActivo.edad}"></td>
+                        <td th:text="${trabajadorActivo.tipo}"></td>
+                        <td th:text="${trabajadorActivo.obraNombre}"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <!-- <script src="script.js"></script> -->

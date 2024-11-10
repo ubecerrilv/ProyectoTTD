@@ -79,16 +79,12 @@ END;
 /
 
 -- Función para contar la cantidad de trabajadores en una obra específica
-CREATE OR REPLACE FUNCTION contar_trabajadores(obra_id IN INTEGER) RETURN INTEGER IS
-    cantidad INTEGER;
+CREATE OR REPLACE FUNCTION contar_trabajadores(x IN INTEGER) RETURN INTEGER IS cantidad INTEGER;
 BEGIN
 SELECT COUNT(*)
 INTO cantidad
 FROM trabajador
-WHERE obra_id = contar_trabajadores.obra_id;
-
-RETURN cantidad;
-END contar_trabajadores;
+WHERE obra_id = x;
 /
 
 -- Vista para mostrar trabajadores activos con los detalles de la obra
@@ -115,5 +111,6 @@ WHERE
 /
 
 -- DOS TABLAS
+-- UN PROCEDIMIENTO
 -- UNA FUNCIÓN
 -- UNA VISTA
